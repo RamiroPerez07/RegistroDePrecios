@@ -4,9 +4,10 @@ import jwt from 'jsonwebtoken';
 
 export class AuthController {
 
-  secret = "este_es_un_secreto_que_debe_ser_reemplazado_por_otro"
-
   async login(req: Request, res: Response) {
+
+    const secret = "este_es_un_secreto_que_debe_ser_reemplazado_por_otro"
+
     const { email, password } = req.body;
 
     try {
@@ -23,7 +24,7 @@ export class AuthController {
       }
 
       // Generar un token JWT
-      const token = jwt.sign({ id: user._id }, this.secret, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
       
       res.status(200).json({user, token });
     } catch (error) {
