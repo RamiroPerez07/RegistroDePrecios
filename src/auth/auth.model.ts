@@ -23,7 +23,7 @@ const UserSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-});
+}, { timestamps: true });
 
 // Hashear la contraseña antes de guardar el usuario
 UserSchema.pre<IUser>('save', async function (next) {

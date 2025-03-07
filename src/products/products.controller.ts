@@ -29,10 +29,10 @@ export class ProductsController {
   
   // Crear un nuevo producto
   async create(req: Request, res: Response) {
-    const { description } = req.body;
+    const { description, userId } = req.body;
 
     try {
-      const newProduct = new Product({ description });
+      const newProduct = new Product({ description, userId });
       await newProduct.save();
       res.status(201).json(newProduct);
     } catch (error) {
