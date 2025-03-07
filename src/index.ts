@@ -3,9 +3,13 @@ import authRoutes from './auth/auth.routes';
 import productRoutes from './products/products.routes';
 import quoteRoutes from './quotes/quotes.routes';
 import { DatabaseConnection } from './database/dbConfig';
+import cors from "cors";
 
 const app = express();
-const port = 3000;
+
+app.use(cors())
+
+const port = process.env.PORT || 3000;
 
 const DbConnection = new DatabaseConnection();
 
