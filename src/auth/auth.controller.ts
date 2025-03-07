@@ -27,6 +27,7 @@ export class AuthController {
       
       res.status(200).json({user, token });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: 'Error del servidor', error });
     }
   }
@@ -37,7 +38,7 @@ export class AuthController {
   try {
     const newUser = new User({ username, email, password });
     await newUser.save();
-    res.status(201).json({ message: 'Usuario registrado exitosamente' });
+    res.status(201).json({ newUser, message: 'Usuario registrado exitosamente' });
   } catch (error) {
     res.status(400).json({ message: 'Error al registrar el usuario', error });
   }
