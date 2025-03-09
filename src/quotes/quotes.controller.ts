@@ -7,7 +7,7 @@ export class QuotesController {
     const { productId } = req.params;
 
     try {
-      const quotes: any = await Quote.find({ productId }).populate('userId', 'username');;
+      const quotes: IQuote[] = await Quote.find({ productId }).populate('userId', 'username');;
       res.json(quotes);
     } catch (error) {
       console.error(error);
