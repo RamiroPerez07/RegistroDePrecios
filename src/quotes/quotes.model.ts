@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { IUser } from '../auth/auth.model';
 
 // Interface para definir el tipo de la cotización
 export interface IQuote extends Document {
@@ -14,6 +15,8 @@ export interface IQuote extends Document {
   userRevisionStock: mongoose.Types.ObjectId;
   observacion?: string; // Opcional
 }
+
+
 
 // Definición del esquema
 const QuoteSchema: Schema = new Schema({
