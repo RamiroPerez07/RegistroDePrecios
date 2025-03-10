@@ -26,7 +26,7 @@ export class AuthController {
       // Generar un token JWT
       const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
       
-      res.status(200).json({username: user.username, email: user.email, token });
+      res.status(200).json({username: user.username, email: user.email, _id: user._id, token });
     } catch (error) {
       console.log(error)
       res.status(500).json({ message: 'Error del servidor', error });
