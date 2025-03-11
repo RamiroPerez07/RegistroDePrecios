@@ -8,5 +8,6 @@ const quotesController = new QuotesController();
 router.post('/', authMiddleware, quotesController.create);
 router.get('/:productId', authMiddleware, quotesController.getQuotesByProductId);
 router.delete('/:quoteId', authMiddleware, quotesController.delete);
+router.delete('/', authMiddleware, quotesController.deleteMany);
 
 export default router;

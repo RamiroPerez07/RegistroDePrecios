@@ -61,4 +61,28 @@ export class QuotesController {
       res.status(500).json({ message: 'Error al eliminar la cotización' });
     }
   }
+
+  async deleteMany(req: Request, res: Response) {
+    const { ids } = req.body;  // La lista de _id de las quotes a eliminar
+  
+    // Verificación de que los IDs sean válidos
+    if (!Array.isArray(ids) || ids.some(id => !mongoose.Types.ObjectId.isValid(id))) {
+      res.status(400).json({ message: 'Lista de IDs no válida' });
+      return
+    }
+  
+    try {
+      const deletedQuotes = await Quote.deleteMany({ _id: { $in: ids } });
+  
+      if (deletedQuotes.deletedCount === 0) {
+        res.status(404).json({ message: 'No se encontraron cotizaciones para eliminar' });
+        return
+      }
+  
+      res.status(200).json({ message: 'Cotizaciones eliminadas exitosamente', deletedCount: deletedQuotes.deletedCount });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al eliminar las cotizaciones' });
+    }
+  }
 }
