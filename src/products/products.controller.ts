@@ -5,7 +5,7 @@ export class ProductsController {
   // Obtener todos los productos
   async getAll(req: Request, res: Response) {
     try {
-      const products = await Product.find();
+      const products = await Product.find().populate('userId', 'username');
       res.json(products);
     } catch (error) {
       res.status(500).json({ message: 'Error al obtener los productos', error });
