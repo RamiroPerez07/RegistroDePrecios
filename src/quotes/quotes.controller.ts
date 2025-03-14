@@ -85,4 +85,45 @@ export class QuotesController {
       res.status(500).json({ message: 'Error al eliminar las cotizaciones' });
     }
   }
+
+  async updateStock(req: Request, res: Response) {
+    const { id, stock } = req.body;  // Obtienes el id y el stock desde el cuerpo de la solicitud
+  
+    // Verificación simple del ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ message: 'ID de cotización no válido' });
+      return;
+    }
+  
+    if (typeof stock !== 'boolean') {
+      res.status(400).json({ message: 'El valor de stock debe ser un booleano' });
+      return;
+    }
+  
+    try {
+      // Aquí obtienes el usuario desde el middleware que lo ha añadido a req.body
+      const userId = req.body.userId;
+  
+      // Actualiza la cotización
+      const updatedQuote = await Quote.findByIdAndUpdate(
+        id, 
+        {
+          stock,  // Nuevo valor de stock
+          fechaRevisionStock: new Date(),  // Fecha actual
+          userRevisionStock: userId  // El ID del usuario que hace la modificación
+        },
+        { new: true }  // Retorna el documento actualizado
+      );
+  
+      if (!updatedQuote) {
+        res.status(404).json({ message: 'Cotización no encontrada' });
+        return;
+      }
+  
+      res.status(200).json(updatedQuote);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al actualizar la cotización' });
+    }
+  }
 }
