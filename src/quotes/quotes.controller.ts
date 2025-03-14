@@ -17,13 +17,16 @@ export class QuotesController {
 
   async create(req: Request, res: Response) {
     
-    const { proveedor, precio, iva, marca, stock, userId, productId, observacion } = req.body;
+    const { proveedor, precio, descuento1, descuento2, descuento3, iva, marca, stock, userId, productId, observacion } = req.body;
 
     try {
       const newQuote = new Quote({
         proveedor,
         precio,
         iva,
+        descuento1,
+        descuento2,
+        descuento3,
         marca,
         stock,
         userId,

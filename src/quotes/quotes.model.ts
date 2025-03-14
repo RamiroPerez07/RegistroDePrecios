@@ -1,12 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IUser } from '../auth/auth.model';
 
 // Interface para definir el tipo de la cotización
 export interface IQuote extends Document {
   proveedor: string;
-  fechaCarga: Date;
   precio: number;
   iva: number;
+  descuento1: number;
+  descuento2: number;
+  descuento3: number;
   marca?: string; // Opcional
   stock: boolean;
   userId: mongoose.Types.ObjectId; // Referencia a user
@@ -21,9 +22,11 @@ export interface IQuote extends Document {
 // Definición del esquema
 const QuoteSchema: Schema = new Schema({
   proveedor: { type: String, required: true },
-  fechaCarga: { type: Date, default: Date.now },
   precio: { type: Number, required: true },
-  iva: { type: Number, required: true },
+  iva: { type: Number, required: true, default: 0 },
+  descuento1: { type: Number, default: 0 },
+  descuento2: { type: Number, default: 0 },
+  descuento3: { type: Number, default: 0 },
   marca: { type: String, required: false },
   stock: { type: Boolean, required: true, default: true },
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
