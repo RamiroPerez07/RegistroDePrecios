@@ -8,5 +8,6 @@ const productsController = new ProductsController();
 router.get('/', authMiddleware, productsController.getAll);
 router.get('/:id', authMiddleware, productsController.getOne);
 router.post('/', authMiddleware, productsController.create); // Ruta para crear un producto
+router.delete('/', authMiddleware, productsController.delete);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Product from './products.model';
+import Quote from '../quotes/quotes.model';
 
 export class ProductsController {
   // Obtener todos los productos
@@ -37,6 +38,31 @@ export class ProductsController {
       res.status(201).json(newProduct);
     } catch (error) {
       res.status(500).json({ message: 'Error al crear el producto', error });
+    }
+  }
+
+  // Eliminar un producto y sus cotizaciones asociadas
+  async delete(req: Request, res: Response) {
+    const { id } = req.body; // Ahora obtenemos el id desde el body en lugar de params
+
+    if (!id) {
+      return res.status(400).json({ message: 'El ID del producto es necesario' });
+    }
+
+    try {
+      // Primero, elimina las cotizaciones asociadas a este producto
+      await Quote.deleteMany({ productId: id });
+
+      // Luego, elimina el producto
+      const deletedProduct = await Product.findByIdAndDelete(id);
+
+      if (!deletedProduct) {
+        return res.status(404).json({ message: 'Producto no encontrado' });
+      }
+
+      res.json({ message: 'Producto y cotizaciones eliminadas correctamente', product: deletedProduct });
+    } catch (error) {
+      res.status(500).json({ message: 'Error al eliminar el producto', error });
     }
   }
 }
