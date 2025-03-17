@@ -65,4 +65,35 @@ export class ProductsController {
       res.status(500).json({ message: 'Error al eliminar el producto', error });
     }
   }
+
+  async updateDescription(req: Request, res: Response) {
+    const { id, description } = req.body;  // La nueva descripción desde el cuerpo de la solicitud
+    
+    if (!description) {
+      res.status(400).json({ message: 'La nueva descripción es necesaria' });
+      return
+    }
+  
+    try {
+      // Buscar el producto por su ID
+      const product = await Product.findById(id);
+      
+      if (!product) {
+        res.status(404).json({ message: 'Producto no encontrado' });
+        return
+      }
+  
+      // Actualizar la descripción del producto
+      product.description = description;
+  
+      // Guardar los cambios en la base de datos
+      await product.save();
+  
+      res.json({ message: 'Descripción actualizada correctamente', product });
+    } catch (error) {
+      res.status(500).json({ message: 'Error al actualizar la descripción', error });
+    }
+  }
+
+
 }

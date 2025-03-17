@@ -9,5 +9,6 @@ router.get('/', authMiddleware, productsController.getAll);
 router.get('/:id', authMiddleware, productsController.getOne);
 router.post('/', authMiddleware, productsController.create); // Ruta para crear un producto
 router.delete('/', authMiddleware, productsController.delete);
+router.put('/', authMiddleware, productsController.updateDescription);
 
 export default router;
