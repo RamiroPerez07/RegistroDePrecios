@@ -141,32 +141,27 @@ export class QuotesController {
     }
   
     try {
-      // Realizamos la actualización de la cotización
-      const updatedQuote = await Quote.findByIdAndUpdate(
-        id, 
-        {
-          proveedor,
-          precio,
-          iva,
-          descuento1,
-          descuento2,
-          plazo,
-          marca,
-          stock,
-          observacion,
-          userRevisionStock: userId,  // Asignamos el ID del usuario que realiza la actualización
-          fechaRevisionStock: new Date(),  // Registramos la fecha de la última actualización
-        },
-        { new: true }  // Esto hace que se retorne el documento actualizado
-      );
-  
-      // Verificamos si la cotización fue encontrada y actualizada
+      const updatedQuote = await Quote.findById(id);
       if (!updatedQuote) {
-        res.status(404).json({ message: 'Cotización no encontrada' });
-        return;
+        return res.status(404).json({ message: 'Cotización no encontrada' });
       }
-  
-      res.status(200).json(updatedQuote);  // Retornamos la cotización actualizada
+
+      updatedQuote.proveedor = proveedor;
+      updatedQuote.precio = precio;
+      updatedQuote.iva = iva;
+      updatedQuote.descuento1 = descuento1;
+      updatedQuote.descuento2 = descuento2;
+      updatedQuote.plazo = plazo;
+      updatedQuote.marca = marca;
+      updatedQuote.stock = stock;
+      updatedQuote.observacion = observacion;
+      updatedQuote.userRevisionStock = userId;
+      updatedQuote.fechaRevisionStock = new Date();
+
+      await updatedQuote.save();  // Guardamos los cambios
+
+      res.status(200).json(updatedQuote); // Se retorna la cotizacion actualizada
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error al actualizar la cotización' });
