@@ -7,7 +7,7 @@ export interface IQuote extends Document {
   iva: number;
   descuento1: number;
   descuento2: number;
-  descuento3: number;
+  plazo?: string;
   marca?: string; // Opcional
   stock: boolean;
   userId: mongoose.Types.ObjectId; // Referencia a user
@@ -26,7 +26,7 @@ const QuoteSchema: Schema = new Schema({
   iva: { type: Number, required: true, default: 0 },
   descuento1: { type: Number, default: 0 },
   descuento2: { type: Number, default: 0 },
-  descuento3: { type: Number, default: 0 },
+  plazo: { type: String, required: false },
   marca: { type: String, required: false },
   stock: { type: Boolean, required: true, default: true },
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
