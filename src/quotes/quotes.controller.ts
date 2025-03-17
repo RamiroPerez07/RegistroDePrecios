@@ -129,4 +129,47 @@ export class QuotesController {
       res.status(500).json({ message: 'Error al actualizar la cotización' });
     }
   }
+
+  async update(req: Request, res: Response) {
+    
+    const { id, proveedor, precio, descuento1, descuento2, plazo, iva, marca, stock, observacion, userId } = req.body;  // Obtenemos los nuevos datos desde el cuerpo de la solicitud
+  
+    // Verificación simple del formato del ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ message: 'ID de cotización no válido' });
+      return;
+    }
+  
+    try {
+      // Realizamos la actualización de la cotización
+      const updatedQuote = await Quote.findByIdAndUpdate(
+        id, 
+        {
+          proveedor,
+          precio,
+          iva,
+          descuento1,
+          descuento2,
+          plazo,
+          marca,
+          stock,
+          observacion,
+          userRevisionStock: userId,  // Asignamos el ID del usuario que realiza la actualización
+          fechaRevisionStock: new Date(),  // Registramos la fecha de la última actualización
+        },
+        { new: true }  // Esto hace que se retorne el documento actualizado
+      );
+  
+      // Verificamos si la cotización fue encontrada y actualizada
+      if (!updatedQuote) {
+        res.status(404).json({ message: 'Cotización no encontrada' });
+        return;
+      }
+  
+      res.status(200).json(updatedQuote);  // Retornamos la cotización actualizada
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al actualizar la cotización' });
+    }
+  }
 }
