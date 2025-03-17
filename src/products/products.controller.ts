@@ -6,7 +6,7 @@ export class ProductsController {
   // Obtener todos los productos
   async getAll(req: Request, res: Response) {
     try {
-      const products = await Product.find().populate('userId', 'username');
+      const products = await Product.find().populate('userId', 'username').populate('userRevisor', 'username');
       res.json(products);
     } catch (error) {
       res.status(500).json({ message: 'Error al obtener los productos', error });
@@ -33,7 +33,7 @@ export class ProductsController {
     const { description, userId } = req.body;
 
     try {
-      const newProduct = new Product({ description, userId });
+      const newProduct = new Product({ description, userId, userRevisor: userId });
       await newProduct.save();
       res.status(201).json(newProduct);
     } catch (error) {
@@ -67,7 +67,7 @@ export class ProductsController {
   }
 
   async updateDescription(req: Request, res: Response) {
-    const { id, description } = req.body;  // La nueva descripción desde el cuerpo de la solicitud
+    const { id, description, userId } = req.body;  // La nueva descripción desde el cuerpo de la solicitud
     
     if (!description) {
       res.status(400).json({ message: 'La nueva descripción es necesaria' });
@@ -85,6 +85,9 @@ export class ProductsController {
   
       // Actualizar la descripción del producto
       product.description = description;
+
+      // Actualizo el user Revisor
+      product.userRevisor = userId;
   
       // Guardar los cambios en la base de datos
       await product.save();
