@@ -143,7 +143,8 @@ export class QuotesController {
     try {
       const updatedQuote = await Quote.findById(id);
       if (!updatedQuote) {
-        return res.status(404).json({ message: 'Cotización no encontrada' });
+        res.status(404).json({ message: 'Cotización no encontrada' });
+        return
       }
 
       updatedQuote.proveedor = proveedor;
